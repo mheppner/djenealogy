@@ -196,10 +196,9 @@ class Individual(TimestampBase, RecordBase, NoteBase):
         
         :returns: Individual or None
         """
-        family = self.parents.exclude(husband__isnull=True).first()
+        family = self.parent_families.exclude(husband__isnull=True).first()
         if family:
             return family.husband
-        
         return None
     
     @property
@@ -209,9 +208,10 @@ class Individual(TimestampBase, RecordBase, NoteBase):
         
         :returns: Individual or None
         """
-        family = self.parents.exclude(wife__isnull=True).first()
+        family = self.parent_families.exclude(wife__isnull=True).first()
         if family:
             return family.wife
+        return None
     
     @property
     def parents(self):
@@ -221,23 +221,39 @@ class Individual(TimestampBase, RecordBase, NoteBase):
         :returns: list of Individuals
         """
         parents = []
-        for p in self.parents.all():
+        for p in self.parent_families.all():
             parents += [self.father, self.mother]
         return parents
     
+    def is_parent(self, individual):
+        """
+        Tests if the given individual is a parent of this individual by
+        searching through parent_families.
+        
+        :param individual: Individual
+        :rtype: boolean
+        """
+        return self.parent_families.filter(models.Q(husband=individual) | models.Q(wife=individual)).count() > 0
+    
     @property
-    def children(self):
+    def siblings(self):
         """
-        Returns all children from all of the families.
+        Returns individuals that belong in the current individual's parent
+        families.
         
-        :returns: list of Individuals
+        :returns: Individual QuerySet
         """
-        children = []
-        for f in self.families.all():
-            children += f.children.all()
+        return Individual.objects.exclude(id=self.id).filter(parent_families__in=self.parent_families.all()).distinct()
+    
+    def is_sibling(self, individual):
+        """
+        Tests if the given individual exists in the siblings list.
         
-        return children
-
+        :param individual: Individual
+        :rtype: boolean
+        """
+        return self.siblings.filter(id=individual.id).count() > 0
+   
     @property
     def families(self):
         """
@@ -250,32 +266,37 @@ class Individual(TimestampBase, RecordBase, NoteBase):
         elif self.sex == 'F':
             return self.wife_roles
             
-        return []
+        return Family.objects.none()
     
     @property
     def spouses(self):
         """
-        Returns all spouses in this individual's families.
+        Returns all individuals that are partners of self appearing in a
+        wife or husband role.
         
-        :returns: list of Individuals
+        :returns: Individual Queryset
         """
-        spouses = []
-        for f in self.families.all():
-            if self.sex == 'M':
-                spouses.append(f.wife)
-            elif self.sex == 'F':
-                spouses.append(f.husband)
-        return spouses
-    
-    def is_parent(self, individual):
-        """
-        Tests if the given individual is a parent of this individual by
-        searching through parent_families.
+        if self.sex == 'M':
+            return Individual.objects.filter(wife_roles__husband=self)
+        elif self.sex == 'F':
+            return Individual.objects.filter(husband_roles__wife=self)
         
-        :param individual: Individual
-        :rtype: boolean
+        return Individual.objects.none()
+
+    @property
+    def children(self):
         """
-        return self.parent_families.filter(models.Q(husband=individual) | models.Q(wife=individual)).count() > 0
+        Returns all children where this individual is either a husband or wife
+        in the parent families.
+        
+        :returns: Individual QuerySet
+        """
+        if self.sex == 'M':
+            return Individual.objects.filter(parent_families__husband=self)
+        elif self.sex == 'F':
+            return Individual.objects.filter(parent_families__wife=self)
+            
+        return Individual.objects.none()
     
     def mutual_families(self, relative):
         """
@@ -293,26 +314,6 @@ class Individual(TimestampBase, RecordBase, NoteBase):
             if relative.parent_families.filter(xref=my_family.xref).exists():
                 mutual.append(my_family)
         return mutual
-        
-    def is_sibling(self, individual):
-        """
-        Tests if the given individual is a mutual family.
-        
-        TODO test this
-        Source: dijxtra/simplepyged
-        
-        :param individual: Individual
-        :rtype: boolean
-        """
-        return len(self.mutual_families(individual)) > 0
-    
-    '''    
-    def is_alive(self):
-        return (self.death.count() == 0)
-    
-    def is_deceased(self):
-        return not self.is_alive()
-    '''
     
     def common_ancestor(self, relative):
         """
@@ -390,8 +391,6 @@ class Individual(TimestampBase, RecordBase, NoteBase):
             
             new_list = []
             for a in ancestor_list:
-                print 'a'
-                print a
                 new_list.extend(a.parents)
                 if None in new_list:
                     new_list.remove(None)
@@ -496,7 +495,7 @@ class Family(TimestampBase, RecordBase, NoteBase):
     
     husband = models.ForeignKey('Individual', related_name='husband_roles', blank=True, null=True)
     wife = models.ForeignKey('Individual', related_name='wife_roles', blank=True, null=True)
-    children = models.ManyToManyField('Individual', related_name='parents', blank=True, null=True)
+    children = models.ManyToManyField('Individual', related_name='parent_families', blank=True, null=True)
 
     def __unicode__(self):
         return u'{0} - {1}'.format(self.husband, self.wife).strip()
