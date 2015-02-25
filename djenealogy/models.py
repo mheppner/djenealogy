@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 import codecs
 from dateutil.parser import parse as parse_date
 
@@ -80,7 +81,7 @@ class Gedcom(TimestampBase):
     
     def __init__(self, *args, **kwargs):
         super(Gedcom, self).__init__(*args, **kwargs)
-        self.__original_File = self.file
+        self.__original_file = self.file
     
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         # test if the file has been changed
@@ -552,9 +553,43 @@ class IndividualEvent(Event):
     
     individual = models.ForeignKey('Individual', related_name='events')
     type = models.CharField(max_length=7, choices=TYPE_CHOICES, default=TYPE_CHOICES[0])
-
+    __original_date = None
+    __original_individual = None
+    
+    def __init__(self, *args, **kwargs):
+        super(IndividualEvent, self).__init__(*args, **kwargs)
+        self.__original_date = self.date
+        self.__original_individual = self.individual
+    
     def __unicode__(self):
         return u'{0} - {1}'.format(self.get_type_display(), self.individual)
+    
+    def _update_indiv_birth_death(self):
+        parsed_dt = self.date_parsed
+        if parsed_dt:
+            if self.type == 'BIRT':
+                self.individual.birth_year = parsed_dt.year
+                self.individual.save()
+            elif self.type == 'DEAT':
+                self.individual.death_year = parsed_dt.year
+                self.individual.save()
+    
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        updated_date = self.date != self.__original_date
+        updated_individual = self.individual != self.__original_individual
+        
+        # save to db
+        super(IndividualEvent, self).save(force_insert, force_update, *args, **kwargs)
+        
+        if updated_individual:
+            self._update_indiv_birth_death()
+        elif updated_date:
+            self._update_indiv_birth_death()
+        elif self.individual.birth is None or self.individual.death is None:
+            self._update_indiv_birth_death()
+        
+        self.__original_date = self.date
+        self.__original_individual = self.individual
 
 
 # TODO fix unicode()s to reduce queries
