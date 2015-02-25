@@ -1,0 +1,112 @@
+<div class="container">
+    <header class="page-header">
+        <h1>Family Group Sheet</h1>
+    </header>
+    
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Parents</h4>
+                </div>
+                <div class="panel-body">
+                    <em>TODO</em>
+                </div>
+            </div><!-- .panel -->
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Parents</h4>
+                </div>
+                <div class="panel-body">
+                    <em>TODO</em>
+                </div>
+            </div><!-- .panel -->
+        </div>
+    </div><!-- .row -->
+    
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Husband</h3>
+                </div>
+                <div class="panel-body">
+                    <h4>
+                        <a data-ui-sref="individual({id: family.husband.id})">
+                            {{ family.husband.given_name }}
+                            {{ family.husband.surname }}
+                        </a>
+                    </h4>
+                    
+                    <p><strong>B:</strong> <em>TODO</em></p>
+                    <p><strong>D:</strong> <em>TODO</em></p>
+                </div>
+            </div><!-- .panel -->
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Wife</h3>
+                </div>
+                <div class="panel-body">
+                    <h4>
+                        <a data-ui-sref="individual({id: family.wife.id})">
+                            {{ family.wife.given_name }}
+                            {{ family.wife.surname }}
+                        </a>
+                    </h4>
+                    <p><strong>B:</strong> <em>TODO</em></p>
+                    <p><strong>D:</strong> <em>TODO</em></p>
+                </div>
+            </div><!-- .panel -->
+        </div>
+    </div><!-- .row -->
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Events</h3>
+                </div>
+                <div class="panel-body">
+                    <em>TODO</em>
+                </div>
+            </div><!-- .panel -->
+        </div>
+    </div><!-- .row -->
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Children</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Birth</th>
+                                <th>Death</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="c in family.children">
+                                <td>
+                                    <a data-ui-sref="individual({id: c.id})">
+                                        {{ c.given_name }}
+                                        {{ c.surname }}
+                                    </a>
+                                </td>
+                                <td><em>TODO</em></td>
+                                <td><em>TODO</em></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- .panel-body -->
+            </div><!-- .panel -->
+        </div>
+    </div><!-- .row -->
+</div><!-- .container -->

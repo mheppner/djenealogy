@@ -1,0 +1,30 @@
+<div class="container">
+    <header class="page-header">
+        <h1>People</h1>
+    </header>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            
+            <button data-ng-click="tableParams.reload()" class="btn btn-default">Reload</button>
+            <button data-ng-click="tableParams.sorting({})" class="btn btn-default">Clear sorting</button>
+            
+            <em>TODO</em> loading {{ tableParams.settings().$loading }}
+   
+            <table data-ng-table="tableParams" data-show-filter="true" class="table table-condensed table-hover">
+                <tbody>
+                    <tr data-ng-repeat="individual in $data">
+                        <td data-title="'Given name'" data-sortable="'given_name'">
+                            <a data-ui-sref="individual({id: individual.id})">{{ individual.given_name }}</a>
+                        </td>
+                        <td data-title="'Surname'" data-sortable="'surname'" data-filter="{ 'surname': 'text'}">
+                            {{ individual.surname }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        
+        </div>
+        
+    </div>
+</div>

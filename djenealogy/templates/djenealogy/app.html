@@ -1,0 +1,116 @@
+{% load staticfiles %}
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <link rel="stylesheet" href="{% static 'djenealogy/css/bootstrap-3.3.2/css/bootstrap.min.css' %}">
+        <style>
+            body {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link rel="stylesheet" href="{% static 'djenealogy/css/bootstrap-3.3.2/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'djenealogy/css/font-awesome-4.3.0/css/font-awesome.min.css' %}">
+
+        <script src="{% static 'djenealogy/js/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <noscript>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <header class="page-header">
+                            <h1>Djenealogy</h1>
+                        </header>
+                        
+                        <h4 class="text-danger">JavaScript disabled</h4>
+                        <p class="text-danger">
+                            You must enable JavaScript in order to use this application.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </noscript>
+    
+        <div data-ng-controller="NavbarCtrl" data-ng-include="template"></div>
+        <div class="djenealogy-fade" data-ui-view></div>
+        <div data-ng-controller="FooterCtrl" data-ng-include="template"></div>
+        
+        
+        <script src="{% static 'djenealogy/js/jquery-1.11.2.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/angular-1.3.13/angular.js' %}"></script>
+        <script src="{% static 'djenealogy/js/angular-1.3.13/angular-animate.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/angular-1.3.13/angular-cookies.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/angular-1.3.13/angular-resource.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/angular-1.3.13/angular-touch.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/ui-router-0.2.13/release/angular-ui-router.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/ui-utils-0.2.2/ui-utils.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/ui-bootstrap-0.12.1/ui-bootstrap-tpls.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/ocLazyLoad-0.5.2/dist/ocLazyLoad.min.js' %}"></script>
+        <script src="{% static 'djenealogy/js/ngStorage-0.3.0/ngStorage.min.js' %}"></script>
+        
+        <script src="{% static 'djenealogy/app/main.js' %}"></script>
+        <script src="{% static 'djenealogy/app/controllers/common.js' %}"></script>
+        <script src="{% static 'djenealogy/app/services/resources.js' %}"></script>
+        
+        <script>
+            (function(angular) {
+                angular.module('djenealogy')
+                    .constant('DEBUG', {% if DEBUG %}true{% else %}false{% endif %})
+                    .constant('STATIC_URL', '{{ STATIC_URL }}')
+                    .constant('MEDIA_URL', '{{ MEDIA_URL }}')
+                    .constant('APP_URL', '{{ STATIC_URL }}djenealogy/app/')
+                    
+                    .constant('URLS', {
+                        'admin': "{% url 'admin:index' %}",
+                        'api': {
+                            'individuals': "{% url 'djenealogy:api:individual-list' %}",
+                            'families': "{% url 'djenealogy:api:family-list' %}" 
+                        }
+                    })
+                    
+                    .constant('MODULES', [{
+                            name: 'djenealogy.controllers.people',
+                            files: [
+                                "{% static 'djenealogy/app/controllers/individuals.js' %}",
+                            ]
+                        }, {
+                            name: 'djenealogy.controllers.families',
+                            files: [
+                                "{% static 'djenealogy/app/controllers/families.js' %}",
+                            ]
+                        }, {
+                            name :'ngTable',
+                            files: [
+                                "{% static 'djenealogy/js/ng-table-0.5.1/dist/ng-table.css' %}",
+                                "{% static 'djenealogy/js/ng-table-0.5.1/dist/ng-table.min.js' %}",
+                            ]
+                        }]);
+            
+            })(angular); 
+        </script>
+        
+        <script type="text/ng-template" id="errorMessage.html">
+            <div class="modal-header">
+                <h4 class="modal-title text-danger text-center">Error</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    The application has encountered an error. Try refreshing your browser window.
+                </p>
+            </div>
+        </script>
+        
+    </body>
+</html>

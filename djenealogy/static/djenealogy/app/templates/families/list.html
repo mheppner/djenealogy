@@ -1,0 +1,42 @@
+<div class="container">
+    <header class="page-header">
+        <h1>Families</h1>
+    </header>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            
+            <button data-ng-click="tableParams.reload()" class="btn btn-default">Reload</button>
+            <button data-ng-click="tableParams.sorting({})" class="btn btn-default">Clear sorting</button>
+            
+            <em>TODO</em> loading: {{ tableParams.settings().$loading }}
+   
+        
+            <table data-ng-table="tableParams" data-show-filter="true" class="table table-condensed table-hover">
+                <tbody>
+                    <tr data-ng-repeat="family in $data">
+                        <td>
+                            <a data-ui-sref="family({id: family.id })" class="btn btn-sm btn-info">
+                                <i class="fa fa-users"></i>
+                            </a>
+                        </td>
+                        <td data-title="'Husband given name'" data-sortable="'husband__given_name'">
+                            <a data-ui-sref="individual({id: family.husband.id})">{{ family.husband.given_name }}</a>
+                        </td>
+                        <td data-title="'Husband surname'" data-sortable="'husband__surname'">
+                            {{ family.husband.surname }}
+                        </td>
+                        <td data-title="'Wife given name'" data-sortable="'wife__given_name'">
+                            <a data-ui-sref="individual({id: individual.id})">{{ family.wife.given_name }}</a>
+                        </td>
+                        <td data-title="'Wife surname'" data-sortable="'wife__surname'" data-filter="{ 'surname': 'text'}">
+                            {{ family.wife.surname }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+        
+    </div>
+</div>

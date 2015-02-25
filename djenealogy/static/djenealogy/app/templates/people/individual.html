@@ -1,0 +1,88 @@
+<div class="container">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-3">
+                <em>TODO</em> photo
+            </div>
+            <div class="col-sm-9">
+                <h1>
+                    {{ individual.prefix }}
+                    {{ individual.given_name }}
+                    {{ individual.surname }}
+                    {{ individual.suffix }}
+                </h1>
+                
+                <p data-ng-if="individual.birth">
+                    <strong>Birth:</strong> {{ individual.birth.date }} in {{ individual.birth.place }}
+                </p>
+                
+                <p data-ng-if="individual.death">
+                    <strong>Death:</strong> {{ individual.death.date }} in {{ individual.death.place }}
+                </p>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-default" disabled>Edit</button>
+                </div>
+                
+            </div>
+        </div><!-- .row -->
+    </div><!-- .page-header -->
+    
+    
+    <div class="row">
+        <div class="col-sm-7">
+            
+            <h3>Family members</h3>
+            <div data-ng-if="individual.parents.length">
+                <h4>Parents</h4>
+                <div class="list-group">
+                    <a data-ui-sref="individual({id: p.id})" data-ng-repeat="p in individual.parents" class="list-group-item">
+                        <h5 class="list-group-item-heading">
+                            {{ p.given_name }}
+                            {{ p.surname }}
+                        </h5>
+                        <p class="list-group-item-text"><em>TODO</em></p>
+                    </a>
+                </div>
+            </div><!-- .list-group -->
+            
+            <h4>Spouses &amp; children</h4>
+            <div class="list-group" data-ng-repeat="f in individual.families">
+                <a data-ng-if="individual.sex == 'F'" data-ui-sref="individual({id: f.husband.id})" class="list-group-item active">
+                    <h5 class="list-group-item-heading">
+                        {{ f.husband.given_name }}
+                        {{ f.husband.surname }}
+                    </h5>
+                    <p class="list-group-item-text"><em>TODO</em></p>
+                </a>
+                <a data-ng-if="individual.sex == 'M'" data-ui-sref="individual({id: f.wife.id})" class="list-group-item active">
+                    <h5 class="list-group-item-heading">
+                        {{ f.wife.given_name }}
+                        {{ f.wife.surname }}
+                    </h5>
+                    <p class="list-group-item-text"><em>TODO</em></p>
+                </a>
+                
+                <a data-ui-sref="individual({id: c.id})" data-ng-repeat="c in f.children" class="list-group-item">
+                    <h5 class="list-group-item-heading">
+                        {{ c.given_name }}
+                        {{ c.surname }}
+                    </h5>
+                    <p class="list-group-item-text"><em>TODO</em></p>
+                </a>
+            </div><!-- .list-group -->
+        </div>
+        
+        <div class="col-sm-5">
+            <h3>Timeline</h3>
+            <div class="list-group">
+                <div class="list-group-item" data-ng-repeat="e in individual.events">
+                    {{ e.type }}
+                    {{ e.place }}
+                    {{ e.date }}
+                </div>
+            </div>
+        </div>
+    </div><!-- .row -->
+    
+</div><!-- .container -->
