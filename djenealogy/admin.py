@@ -52,7 +52,7 @@ class IndividualAdmin(admin.ModelAdmin):
     
     def parents_list(self, obj):
         txt = ''
-        for x in obj.parents.all():
+        for x in obj.parent_families.all():
             txt += '<li>%s</li>' % ind_link(x, 'admin:djenealogy_family_change')
         return '<ul>%s</ul>' % txt
     parents_list.short_description = 'Parent families'
