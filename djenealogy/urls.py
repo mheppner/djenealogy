@@ -12,6 +12,7 @@ router.register(r'families', rest.FamilyViewSet)
 urlpatterns = patterns('',
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/', include(router.urls, namespace='api')),
+    url(r'^api/tree/$', rest.TreeView.as_view(), name='api-tree',),
     
     url(r'^$', views.index, name='index'),
 )

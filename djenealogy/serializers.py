@@ -48,4 +48,25 @@ class IndividualDetailSerializer(serializers.ModelSerializer):
     siblings = IndividualSerializer(many=True, read_only=True)
     spouses = IndividualSerializer(many=True, read_only=True)
 
-        
+
+class TreeFamilySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Family
+        fields = (
+            'id',
+            'xref',
+        )
+
+
+class TreeIndividualSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Individual
+        fields = (
+            'id',
+            'xref',
+            'sex',
+            'given_name',
+            'surname',
+            'birth_year',
+            'death_year',
+        )
