@@ -179,6 +179,28 @@
                         }
                     })
                     
+                    .state('tree', {
+                        title: 'Tree',
+                        url: '/individuals/:id/tree',
+                        templateUrl: APP_URL + 'templates/tree/view.html',
+                        controller: 'TreeCtrl',
+                        resolve: {
+                            tree: ['$http', '$stateParams', 'URLS',
+                                function($http, $stateParams, URLS) {
+                                    return $http.get(URLS.api.tree, {
+                                        params: {id: $stateParams.id}
+                                    });
+                                }
+                            ],
+                            loadCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load([
+                                    'djenealogy.controllers.tree',
+                                    'ngDraggable',
+                                ]);
+                            }]
+                        }
+                    })
+                    
                     .state('families', {
                         title: 'Families',
                         url: '/families',
@@ -210,6 +232,7 @@
                             }]
                         }
                     })
+                    
                     
                 ;
             }

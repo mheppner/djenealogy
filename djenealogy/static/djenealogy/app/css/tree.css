@@ -1,0 +1,81 @@
+
+.tree-branch {
+    position: relative;
+    margin-left: 14.285714286em; /*200px;*/
+}
+.tree-branch:before {
+    content: "";
+    width: 1.7857142857em; /*25px;*/
+    border-top: 1px solid black; /*1px*/
+    position: absolute;
+    left: -3.5714285714em; /*-50px;*/
+    top: 50%;
+    margin-top: 0.07142857143em; /*1px;*/
+}
+
+.tree-entry {
+    position: relative;
+    min-height: 3.5714285714em; /*50px;*/
+}
+.tree-entry:before {
+    content: "";
+    height: 100%;
+    border-left: 1px solid black; /*1px*/
+    position: absolute;
+    left: -1.7857142857em; /*-25px;*/
+}
+.tree-entry:after {
+    content: "";
+    width: 1.7857142857em; /*25px;*/
+    border-top: 1px solid black; /*1px */
+    position: absolute;
+    left: -1.7857142857em; /*-25px;*/
+    top: 50%;
+    margin-top: 0.07142857143em; /*1px;*/
+}
+.tree-entry:first-child:before {
+    width: 0.7142857143em; /*10px;*/
+    height: 50%;
+    top: 50%;
+    margin-top: 0.1428571429em; /*2px;*/
+    border-radius: 0.3571428571em 0 0 0; /*5px*/
+}
+.tree-entry:first-child:after {
+    height: 0.7142857143em; /*10px;*/
+    border-radius: 0.3571428571em 0 0 0; /*5px*/
+}
+.tree-entry:last-child:before {
+    width: 0.7142857143em; /*10px;*/
+    height: 50%;
+    border-radius: 0 0 0 0.3571428571em; /*5px;*/
+}
+.tree-entry:last-child:after {
+    height: 0.7142857143em; /*10px;*/
+    border-top: none;
+    border-bottom: 1px solid black; /*1px*/
+    border-radius: 0 0 0 0.3571428571em; /*5px*/
+    margin-top: -0.6428571429em; /*-9px;*/
+}
+.tree-entry.sole:before {
+    display: none;
+}
+.tree-entry.sole:after {
+    width: 1.7857142857em; /*25px;*/
+    height: 0;
+    margin-top: 0.07142857143em; /*1px;*/
+    border-radius: 0;
+}
+
+.tree-label {
+    display: block;
+    width: 10.714285714em; /*150px;*/
+    padding: 0.1428571429em 0.3571428571em; /*2px 5px;*/
+    line-height: 1.1428571429em; /*16px;*/
+    text-align: center;
+    border: 1px solid black; /*1px*/
+    border-radius: 0.2142857143em; /*3px;*/
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -0.7142857143em; /*-10px;*/
+}
