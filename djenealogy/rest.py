@@ -54,6 +54,9 @@ class TreeView(views.APIView):
         :rtype: dict
         """
         # start with base individual
+        if individual is None:
+            return None
+        
         indv_ser = serializers.TreeIndividualSerializer(individual).data
         
         # recursive case
