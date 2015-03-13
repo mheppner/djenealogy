@@ -1,0 +1,66 @@
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-4">
+            <em>TODO photo</em>
+        </div>
+        <div class="col-sm-8">
+            <button type="button" class="close" data-ng-click="close()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            
+            <h4>{{ i.given_name }} {{ i.surname }}</h4>
+            
+            <p data-ng-if="i.birth">
+                <strong>Birth:</strong>
+                {{ i.birth.date }} in
+                {{ i.birth.place }}
+            </p>
+            <p data-ng-if="i.death">
+                <strong>Death:</strong>
+                {{ i.death.date }} in
+                {{ i.death.place }}
+            </p>
+            <a data-ui-sref="tree({id: i.id})" data-ng-click="close()" class="btn btn-default" data-ng-disabled="$state.is('tree', {id: i.id})">
+                Tree
+            </a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <hr>
+            
+            <h4>Spouses &amp; children</h4>
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Birth</th>
+                        <th>Death</th>
+                    </tr>
+                </thead>
+                <tbody data-ng-repeat="family in i.families">
+                    <tr data-ng-include="'treeModalIndvLink'" data-ng-init="indv = family.wife" data-ng-if="i.sex == 'M'" class="active"></tr>
+                    <tr data-ng-include="'treeModalIndvLink'" data-ng-init="indv = family.husband" data-ng-if="i.sex == 'F'" class="active"></tr>
+                    <tr data-ng-include="'treeModalIndvLink'" data-ng-init="indv = c" data-ng-repeat="c in family.children"></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>
+
+
+<script type="text/ng-template" id="treeModalIndvLink">
+    <td>
+        <a data-ui-sref="tree({id: indv.id})" data-ng-click="close()" class="btn btn-default btn-xs">
+            <i class="fa fa-user"></i>
+        </a>
+        <a data-ui-sref="individual({id: indv.id})" data-ng-click="close()">
+            {{ indv.given_name }} {{ indv.surname }}
+        </a>
+    </td>
+    <td>{{ indv.birth_year }}</td>
+    <td>{{ indv.death_year }}</td>
+</script>

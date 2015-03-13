@@ -1,3 +1,35 @@
+#pedigree-tree {
+    overflow: hidden;
+}
+
+.tree-wrapper {
+    border: 1px solid #ccc;
+}
+
+.tree-outer {
+    height: 420px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+.tree-outer  .tree-wrapper {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+}
+.tree-outer  .tree-wrapper  .tree-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.tree-outer  .tree-wrapper  .tree-inner.ui-draggable-dragging {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 .tree-branch {
     position: relative;

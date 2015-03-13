@@ -1,0 +1,29 @@
+
+<div class="tree-outer">
+    <div class="tree-wrapper">
+        <div class="tree-inner" jqyoui-draggable="draggableParams" data-jqyoui-options="draggableOptions" data-drag="true" data-ng-model="treeModel">
+            <ul style="position: relative;" class="list-unstyled">
+                <li data-ng-include="'treePath'" data-ng-init="indv = treedata" class="list-unstyled"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="treePath">
+    <span class="tree-label">
+        <a data-ng-click="clickIndv(indv)">
+            {{ indv.given_name }} {{ indv.surname }}
+        </a>
+    </span>
+    
+    <span data-ng-repeat="fam in indv.parent_families | limitTo: 1">
+        <ul data-ng-if="fam.husband || fam.wife" class="tree-branch list-unstyled">
+            <li class="tree-entry" data-ng-if="fam.husband" data-ng-include="'treePath'" data-ng-init="indv = fam.husband"></li>
+            <li class="tree-entry" data-ng-if="fam.wife" data-ng-include="'treePath'" data-ng-init="indv = fam.wife"></li>
+            <li class="tree-entry" data-ng-if="! fam.husband || ! fam.wife">
+                <span class="tree-label"><em>TODO</em></span>
+            </li>
+        </ul>
+    </span>
+</script>

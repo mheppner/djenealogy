@@ -9,6 +9,7 @@
     
     angular.module('djenealogy.controllers',[]);
     angular.module('djenealogy.services', []);
+    angular.module('djenealogy.directives', []);
     
     angular.module('djenealogy', [
             'ngAnimate',
@@ -24,6 +25,7 @@
             
             'djenealogy.services',
             'djenealogy.controllers',
+            'djenealogy.directives',
         ])
     
         .run([
@@ -194,8 +196,9 @@
                             ],
                             loadCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                                 return $ocLazyLoad.load([
+                                    'djenealogy.directives.tree',
                                     'djenealogy.controllers.tree',
-                                    'ngDraggable',
+                                    'ngDragDrop',
                                 ]);
                             }]
                         }

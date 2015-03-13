@@ -4,19 +4,26 @@
         <div class="col-sm-12">
             
             <div class="btn-group">
-                <label class="btn btn-default btn-sm" ng-model="$storage.tree_width" btn-radio="'container'">
+                <label class="btn btn-default btn-sm" ng-model="$storage.tree_width" btn-radio="'container'"  data-tooltip-placement="bottom" data-tooltip="Condense width">
                     <i class="fa fa-compress"></i>
                 </label>
-                <label class="btn btn-default btn-sm" ng-model="$storage.tree_width" btn-radio="'container-fluid'">
+                <label class="btn btn-default btn-sm" ng-model="$storage.tree_width" btn-radio="'container-fluid'" data-tooltip-placement="bottom" data-tooltip="Expand width">
                     <i class="fa fa-expand"></i>
                 </label>
             </div>
             
+            <button class="btn btn-default btn-sm" data-ng-click="center()"  data-tooltip-placement="bottom" data-tooltip="Center on root">
+                <i class="fa fa-align-center"></i>
+            </button>
+            
             <div class="btn-group">
-                <button class="btn btn-default btn-sm" data-ng-click="zoom(-0.1)" data-ng-disabled="$storage.tree_zoom < 0.5">
+                <button class="btn btn-default btn-sm" data-ng-click="zoom(-0.1)" data-ng-disabled="$storage.tree_zoom < 0.5" data-tooltip-placement="bottom" data-tooltip="Zoom out">
                     <i class="fa fa-search-minus"></i>
                 </button>
-                <button class="btn btn-default btn-sm" data-ng-click="zoom(0.1)" data-ng-disabled="$storage.tree_zoom > 1.5">
+                <button class="btn btn-default btn-sm" data-ng-click="$storage.tree_zoom = 1.0" data-ng-disabled="$storage.tree_zoom == 1.0" data-tooltip-placement="bottom" data-tooltip="Reset zoom">
+                    <i class="fa fa-repeat"></i>
+                </button>
+                <button class="btn btn-default btn-sm" data-ng-click="zoom(0.1)" data-ng-disabled="$storage.tree_zoom > 1.5" data-tooltip-placement="bottom" data-tooltip="Zoom in">
                     <i class="fa fa-search-plus"></i>
                 </button>
             </div>
@@ -25,28 +32,6 @@
     </div>
 </div>
 
-
-<div data-ng-class="$storage.tree_width" data-ng-style="{'font-size': $storage.tree_zoom + 'em'}">
-    <ul style="position: relative;" class="list-unstyled">
-        <li data-ng-include="'treePath'" data-ng-init="indv = tree" class="list-unstyled"></li>
-    </ul>
+<div pedigreetree data-ng-class="$storage.tree_width" data-ng-style="{'font-size': $storage.tree_zoom + 'em'}" id="pedigree-tree">
+    <div pedigree-tree treedata="indv_tree"></div>
 </div>
-
-
-<script type="text/ng-template" id="treePath">
-    <span class="tree-label">
-        <a data-ui-sref="individual({id: indv.id})">
-            {{ indv.given_name }} {{ indv.surname }}
-        </a>
-    </span>
-    
-    <span data-ng-repeat="fam in indv.parent_families | limitTo: 1">
-        <ul data-ng-if="fam.husband || fam.wife" class="tree-branch list-unstyled">
-            <li class="tree-entry" data-ng-if="fam.husband" data-ng-include="'treePath'" data-ng-init="indv = fam.husband"></li>
-            <li class="tree-entry" data-ng-if="fam.wife" data-ng-include="'treePath'" data-ng-init="indv = fam.wife"></li>
-            <li class="tree-entry" data-ng-if="! fam.husband || ! fam.wife">
-                <span class="tree-label"><em>TODO</em></span>
-            </li>
-        </ul>
-    </span>
-</script>
